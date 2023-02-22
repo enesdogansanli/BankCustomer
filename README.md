@@ -14,6 +14,10 @@ Bank Customer Data for Predicting Customer Churn
     - [Decision Tree](#decision-tree)
     - [Artifical Neural Network](#artifical-neural-network)
   - [Deneysel Analiz](#deneysel-analiz)
+    - [Veri Ön İşleme](#veri-ön-i̇şleme)
+    - [Model Eğitimi](#model-eğitimi)
+    - [Doğrulama Aşaması](#doğrulama-aşaması)
+    - [Test Aşaması](#test-aşaması)
   - [Sonuç](#sonuç)
   - [Referanslar](#referanslar)
 
@@ -126,10 +130,74 @@ verilecek verinin kategorik değişkenlerinin sayısal değişkene dönüştür�
 
 ## Deneysel Analiz
 
-* Veri Ön İşleme
-* Model Eğitimi
-* Doğrulama Aşaması
-* Test Aşaması
+### Veri Ön İşleme
+
+Veri seti incelemesinde hedef değişken olan ‘churn’ değişkeni incelendiğinde verinin esasen 
+dengeli bir veri olmadığı gözlemlenmiştir. Bu nokta daha programın başında iken not edilmiş 
+ve elde edilecek başarılarda göz önünde bulundurulmuştur.
+
+Veri setinde bulunan ‘customer_id’ özelliği kişiye özel bir veri olduğu için veri setimizden 
+çıkarılmıştır.
+
+Veri setimizde eksik veri olup olmadığı kontrolü isnull() fonksiyonu kullanılarak 
+gerçekleştirilmiş ve her hangi bir eksik veri olmadığı gözlemlenmiştir. Bu noktada veri setimiz 
+hedef değişken (y) ve diğer değişkenler (x) olacak şekilde ikiye ayrılmıştır. Hedef değişkeni 
+tahmin etmemize yarayacak değişkenler arasındaki korelasyon incelenmiş ve birbirleri ile 
+yüksek korelasyon içerisinde olan değişken gözlemlenmemiştir. Bu nedenle herhangi bir 
+özellik veri setinden çıkarılmamıştır. Veriler normalize edilerek eğitilmeye hazır hale 
+getirilmiştir.
+
+![Korelasyon](images/corr.png)
+
+### Model Eğitimi
+
+Bu aşamada 4 adet modelimiz parametreleri default olarak kalacak şekilde herhangi bir değişiklik yapmadan eğitim verisi ile eğitilmiş ve başarı sonuçları elde edilmiştir. Elde edilen sonuçlar hiper parametre optimizasyonu uygulandıktan sonra elde edilen modellerin başarısı ile karşılaştırılmak için not edilmiştir.
+
+### Doğrulama Aşaması
+
+Bu aşamada her model için en iyi hiper parametrelerin bulunması hedeflenmiştir. Bunun için 
+Sklearn kütüphanesi altında bulunan GridSearchCV [2] yönteminden faydalanılmıştır. Bu 
+yöntemi kullanmadan önce her modelin sahip olduğu parametrelerin değer aralıkları 
+belirlenmiştir. Sonrasında hiper parametrelerinin belirlenmesi istenen model, parametre değer 
+aralıkları, cross-validation vb. değerler ile model oluşturulup en iyi parametreler belirlenmiştir. 
+Bu aşamada veri seti olarak validasyon verisi kullanılmış ve en iyi parametreler bu veri seti 
+üzerinden belirlenmiştir.
+
+```python
+from sklearn.model_selection import GridSearchCV
+
+params_neural = {
+    'activation' : ['identity','logistic', 'tanh', 'relu'],
+    'solver' : ['lbfgs', 'sgd', 'adam'],
+    'hidden_layer_sizes' : [(10,),(20,),(30,),(40,),(50,),(75,),(100,),(150,),(200,),(250,)],
+    'learning_rate' : ['constant', 'invscaling', 'adaptive'],
+    'max_iter' : [50,100,200,250,300,400,500]
+}
+
+neural_clsf = GridSearchCV(
+    estimator=MLPClassifier(),
+    param_grid=params_neural,
+    cv = 5,
+    n_jobs=5,
+    verbose=1
+)
+```
+
+### Test Aşaması
+
+Bu aşamada hiper parametreleri en iyi olarak ayarlanmış modellerimizi ile test için ayırdığımız 
+veriler işleme tabi tutulmuş ve her model için başarı sonuçları incelenmiştir. Modelin sağladığı 
+başarının gözlemlenmesi için confusion matris oluşturulmuştur.
+
+![Başarı Sonuçları](images/result.PNG)
+
+Her model için accuracy değerleri incelendiğinde hiper parametreleri ayarlanmış en iyi 
+modellerin base modele göre daha başarılı olduğu gözlemlenmiştir. Burada hiper parametre 
+belirleme işleminin başarılı bir şekilde gerçekleştirildiği söylenebilir. 
+Ayrıca modellerin accuracy değerleri birbirine yakın olmakla beraber en başarılı modelin 
+Neural Network olduğu gözlemlenmiştir. Diğer başarı ölçüm kriterleri incelendiğinde accuracy 
+değerine göre daha düşük değerler elde edildiği görülmüştür. Burada veri setimizin dengesiz 
+bir veri seti olmasının böyle bir sonuca yol açtığı düşünülmektedir.
 
 ## Sonuç
 
