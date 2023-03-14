@@ -5,6 +5,7 @@ Bank Customer Data for Predicting Customer Churn
 
 - [BankCustomer](#bankcustomer)
   - [İçindekiler](#i̇çindekiler)
+  - [Kurulum](#kurulum)
   - [Özet](#özet)
   - [Giriş](#giriş)
   - [Veri Kümesi](#veri-kümesi)
@@ -20,6 +21,21 @@ Bank Customer Data for Predicting Customer Churn
     - [Test Aşaması](#test-aşaması)
   - [Sonuç](#sonuç)
   - [Referanslar](#referanslar)
+
+## Kurulum
+
+**Python --version 3.9.13**
+
+```
+pip install pandas
+pip install numpy
+pip install scikit-learn
+pip install matplotlib
+pip install nltk
+pip install pickle5
+pip install collection
+pip install regex
+```
 
 ## Özet
 
