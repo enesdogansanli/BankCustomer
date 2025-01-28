@@ -1,4 +1,5 @@
 # BankCustomer
+
 Bank Customer Data for Predicting Customer Churn
 
 ## İçindekiler
@@ -27,14 +28,7 @@ Bank Customer Data for Predicting Customer Churn
 **Python --version 3.9.13**
 
 ```
-pip install pandas
-pip install numpy
-pip install scikit-learn
-pip install matplotlib
-pip install nltk
-pip install pickle5
-pip install collection
-pip install regex
+pip install -r requirements.txt
 ```
 
 ## Özet
@@ -163,7 +157,7 @@ yüksek korelasyon içerisinde olan değişken gözlemlenmemiştir. Bu nedenle h
 özellik veri setinden çıkarılmamıştır. Veriler normalize edilerek eğitilmeye hazır hale 
 getirilmiştir.
 
-![Korelasyon](images/corr.png)
+![Korelasyon](docs/images/corr.png)
 
 ### Model Eğitimi
 
@@ -205,7 +199,7 @@ Bu aşamada hiper parametreleri en iyi olarak ayarlanmış modellerimizi ile tes
 veriler işleme tabi tutulmuş ve her model için başarı sonuçları incelenmiştir. Modelin sağladığı 
 başarının gözlemlenmesi için confusion matris oluşturulmuştur.
 
-![Başarı Sonuçları](images/result.PNG)
+![Başarı Sonuçları](docs/images/result.PNG)
 
 Her model için accuracy değerleri incelendiğinde hiper parametreleri ayarlanmış en iyi 
 modellerin base modele göre daha başarılı olduğu gözlemlenmiştir. Burada hiper parametre 
